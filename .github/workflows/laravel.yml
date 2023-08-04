@@ -11,41 +11,53 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: ssh key
-      run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 168.119.62.116 >> ~/.ssh/known_hosts
+
+    - name: Deploy App
+      uses: DhrumilGohil/my-first-github-action@v1
       env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: copy file to server
-      run: bash .github/deploy.sh
+        HOST_NAME: ${{ secrets.HOST_NAME }}
+        HOST_USER: ${{ secrets.HOST_NAME }}
+        DB_HOST: ${{ secrets.DB_HOST }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        DB_DATABASE: ${{ secrets.DB_DATABASE }}
+        DB_PORT: ${{ secrets.DB_PORT }}
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#     - name: ssh key
+#       run: |
+#           mkdir -p ~/.ssh
+#           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+#           chmod 600 ~/.ssh/id_rsa
+#           ssh-keyscan -H 168.119.62.116 >> ~/.ssh/known_hosts
+#       env:
+#           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#     - name: copy file to server
+#       run: bash .github/deploy.sh
       
-    - name: ssh to server
-      run: | 
-            ssh root@168.119.62.116 '
-            cd ~/test
-            composer install
-            # Create .env file (assuming you have all necessary environment variables set as secrets in GitHub)
-            echo "APP_ENV=production" >> .env
-            echo "APP_NAME=Laravel" >> .env
-            echo "APP_DEBUG=false" >> .env
-            echo "DB_CONNECTION=mysql" >> .env
-            echo "DB_HOST=127.0.0.1" >> .env
-            echo "DB_PORT=3306" >> .env
-            echo "DB_DATABASE=laravel" >> .env
-            echo "DB_USERNAME=root" >> .env
-            echo "DB_PASSWORD=Rtcamp@1703" >> .env
-            echo "APP_KEY=" >> .env
-            php artisan migrate:fresh — seed
-            chmod -R o+w storage/ bootstrap/ 
-            php artisan key:generate
-            php artisan cache:clear
-            php artisan config:clear
-            php artisan route:clear
-            php artisan view:clear
-            php artisan config:clear
-            composer dump-autoload 
-            php -S 0.0.0.0:8000 -t public/
-            '
+#     - name: ssh to server
+#       run: | 
+#             ssh root@168.119.62.116 '
+#             cd ~/test
+#             composer install
+#             # Create .env file (assuming you have all necessary environment variables set as secrets in GitHub)
+#             echo "APP_ENV=production" >> .env
+#             echo "APP_NAME=Laravel" >> .env
+#             echo "APP_DEBUG=false" >> .env
+#             echo "DB_CONNECTION=mysql" >> .env
+#             echo "DB_HOST=127.0.0.1" >> .env
+#             echo "DB_PORT=3306" >> .env
+#             echo "DB_DATABASE=laravel" >> .env
+#             echo "DB_USERNAME=root" >> .env
+#             echo "DB_PASSWORD=Rtcamp@1703" >> .env
+#             echo "APP_KEY=" >> .env
+#             php artisan migrate:fresh — seed
+#             chmod -R o+w storage/ bootstrap/ 
+#             php artisan key:generate
+#             php artisan cache:clear
+#             php artisan config:clear
+#             php artisan route:clear
+#             php artisan view:clear
+#             php artisan config:clear
+#             composer dump-autoload 
+#             php -S 0.0.0.0:8000 -t public/
+#             '
