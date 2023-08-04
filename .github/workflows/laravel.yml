@@ -16,7 +16,7 @@ jobs:
       uses: DhrumilGohil/my-first-gitub-action@v3
       env:
         HOST_NAME: ${{ secrets.HOST_NAME }}
-        HOST_USER: ${{ secrets.HOST_NAME }}
+        HOST_USER: ${{ secrets.HOST_USER }}
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_USER: ${{ secrets.DB_USER }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
