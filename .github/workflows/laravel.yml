@@ -12,8 +12,16 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    - run: hostname
-
+    - run: |
+            echo "$SSH_PRIVATE_KEY"
+            mkdir -p ~/.ssh 
+            echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+            ssh-keyscan $HOST_NAME >> ~/.ssh/known_hosts
+      env : 
+          HOST_NAME: ${{ secrets.HOST_NAME }}
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    
     - name: Deploy App
       uses: DhrumilGohil/my-first-gitub-action@main
       env:
