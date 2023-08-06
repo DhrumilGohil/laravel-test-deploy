@@ -10,8 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-
+    
     - run: |
             echo "$SSH_PRIVATE_KEY"
             mkdir -p ~/.ssh 
@@ -23,6 +22,8 @@ jobs:
           HOST_NAME: ${{ secrets.HOST_NAME }}
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
     
+    - uses: actions/checkout@v3
+
     - name: Deploy App
       uses: DhrumilGohil/my-first-gitub-action@main
       env:
