@@ -12,7 +12,15 @@ jobs:
     steps:
     
     - uses: actions/checkout@v3
-
+    - name: ssh key
+      run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $HOST_NAME >> ~/.ssh/known_hosts
+      env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          HOST_NAME: ${{ secrets.HOST_NAME }}
     - name: Deploy App
       uses: DhrumilGohil/my-first-gitub-action@main
       env:
@@ -24,14 +32,7 @@ jobs:
         DB_DATABASE: ${{ secrets.DB_DATABASE }}
         DB_PORT: ${{ secrets.DB_PORT }}
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-#     - name: ssh key
-#       run: |
-#           mkdir -p ~/.ssh
-#           echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-#           chmod 600 ~/.ssh/id_rsa
-#           ssh-keyscan -H 168.119.62.116 >> ~/.ssh/known_hosts
-#       env:
-#           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
 #     - name: copy file to server
 #       run: bash .github/deploy.sh
       
